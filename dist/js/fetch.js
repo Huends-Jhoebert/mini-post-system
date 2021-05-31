@@ -2,6 +2,7 @@ const btnGet = document.querySelector(".btn-get");
 const btnRemove = document.querySelector(".btn-remove");
 const postContainer = document.querySelector(".post-container");
 const loadingAnimation = document.querySelector(".loader");
+var number = 0;
 var jsonLength = 0;
 
 loadingAnimation.style.display = "none";
@@ -13,12 +14,13 @@ btnGet.addEventListener("click", () => {
          loadingAnimation.style.display = "none";
          jsonLength = json.length;
          json.forEach((element) => {
+            number += 1; //increament by 1
             if (element.id != jsonLength && element.id != jsonLength / 2) {
                postContainer.innerHTML += `
    			<div class="container">
    			<p class="title">${element.title}</p>
    			<p>${element.body}</p>
-			<button class="btn btn-danger remove-post">REMOVE POST <i class="bi bi-trash"></i></button>
+			<button class="btn btn-danger" id="remove-post${number}" onClick="removePost(this.id);">REMOVE POST <i class="bi bi-trash"></i></button>
    			</div>
    			`;
             } else if (element.id == jsonLength / 2) {
@@ -26,7 +28,7 @@ btnGet.addEventListener("click", () => {
    			<div class="container">
    			<p id="middle" class="title">${element.title}</p>
    			<p>${element.body}</p>
-			   <button class="btn btn-danger">REMOVE POST <i class="bi bi-trash"></i></button>
+			   <button class="btn btn-danger" id="remove-post${number}" onClick="removePost(this.id);">REMOVE POST <i class="bi bi-trash"></i></button>
    			</div>
    			`;
             } else if (element.id == jsonLength) {
@@ -34,7 +36,7 @@ btnGet.addEventListener("click", () => {
    			<div class="container">
    			<p id="bottom" class="title">${element.title}</p>
    			<p>${element.body}</p>
-			   <button class="btn btn-danger">REMOVE POST <i class="bi bi-trash"></i></button>
+			   <button class="btn btn-danger remove-post${number}" id="remove-post${number}" onClick="removePost(this.id);">REMOVE POST <i class="bi bi-trash"></i></button>
    			</div>`;
             }
          });
@@ -44,3 +46,11 @@ btnGet.addEventListener("click", () => {
 btnRemove.addEventListener("click", () => {
    postContainer.innerHTML = "";
 });
+
+//remove post
+function removePost(idName) {
+   var nameId = idName.toString();
+   var getIdName = document.getElementById(`${nameId}`).parentNode;
+   //    var x = document.getElementById("myLI").parentNode.nodeName;
+   getIdName.remove();
+}
